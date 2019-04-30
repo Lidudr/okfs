@@ -112,6 +112,7 @@
                                 @endif
                             </div>
                         </div>
+                        <input type="hidden" name="role" value="doctor" id="role">
 
                         <div class="form-group row">
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>

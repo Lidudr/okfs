@@ -7,7 +7,7 @@
         <div class="card">
                 <div class="card-body">
                     <span class="card-title">Doctors</span>
-                    <a href="/admin/doctor/add" class="float-right">New Doctor</a>
+                    <a href="/app/doctor/add" class="float-right">New Doctor</a>
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                         <thead>
@@ -24,8 +24,8 @@
                             <td>{{$doctor->user->first_name . ' ' . $doctor->user->middle_name . ' ' . $doctor->user->last_name}}</td>
                             <td>{{$doctor->user->email}}</td>
                             <td>{{$doctor->hospital->name}}</td>
-                            <td><a href="/admin/doctor/edit/{{$doctor->id}}"><i class="fa fa-edit"></i></a>
-                            <a class="text-danger" href="/admin/doctor/delete/{{$doctor->id}}"><i class="fa fa-trash"></i></a></td>
+                            <td><a href="/app/doctor/edit/{{$doctor->id}}"><i class="fa fa-edit"></i></a>
+                            <a class="text-danger" href="/app/doctor/delete/{{$doctor->id}}"><i class="fa fa-trash"></i></a></td>
                             </tr>
                             @endforeach
                         </tbody>

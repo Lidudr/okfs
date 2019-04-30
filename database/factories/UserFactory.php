@@ -17,11 +17,13 @@ use Illuminate\Mail\Message;
 */
 
 $factory->define(App\User::class, function (Faker $faker) {
+    $role = ['user', 'doctor'];
     return [
         'first_name' => $faker->firstName,
         'middle_name' => $faker->lastName,
         'last_name' => $faker->lastName,
         'phone' => $faker->phoneNumber,
+        'role' => array_random($role),
         'email' => $faker->unique()->safeEmail,
         'password' => Hash::make('password'),
         'email_verified_at' => now(),

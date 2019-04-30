@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Patient;
-use App\User;
+use \App\User;
 
-class PatientController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,14 +15,6 @@ class PatientController extends Controller
     public function index()
     {
         //
-    }
-
-    public function hspitalPatients() {
-        $user = User::with('patient')->find(auth()->id());
-        // dd($user->patient->hospital_id);
-        $patients = Patient::with('user')->where('hospital_id', $user->doctor->hospital_id)->get();
-        // dd($doctors);
-        return view('patients')->with('patients', $patients);
     }
 
     /**
@@ -55,7 +46,7 @@ class PatientController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(User::find($id));
     }
 
     /**

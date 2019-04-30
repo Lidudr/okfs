@@ -8,53 +8,44 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>{{ config('app.name', 'OKDFS') }}</title>
-  <!-- plugins:css -->
   <link rel="stylesheet" href="{{ asset('vendors/iconfonts/mdi/css/materialdesignicons.min.css') }}">
   <link rel="stylesheet" href="{{ asset('vendors/iconfonts/font-awesome/css/font-awesome.css') }}">
   <link rel="stylesheet" href="{{ asset('vendors/css/vendor.bundle.base.css') }}">
   <link rel="stylesheet" href="{{ asset('vendors/css/vendor.bundle.addons.css') }}">
-  <!-- endinject -->
-  <!-- plugin css for this page -->
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-  <!-- endinject -->
   <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" />
+    <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
 
 <body>
-  <div class="container-scroller">
-    <!-- partial:partials/_navbar.html -->
+  <div class="container-scroller" id="app">
     <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-        <a class="navbar-brand brand-logo" href="index.html">
-          <h3 class="mt-3 text-primary">{{ config('app.name', 'OKDFS') }}</h3>
+        <a class="navbar-brand brand-logo" href="/">
+          <h3 class="mt-2 text-light">{{ config('app.name', 'OKDFS') }}</h3>
         </a>
-        <a class="navbar-brand brand-logo-mini" href="index.html">
-          <h4 class="mt-3 text-primary">{{ config('app.name', 'OKDFS') }}</h4>
+        <a class="navbar-brand brand-logo-mini" href="/">
+          <h4 class="mt-2 text-light">{{ config('app.name', 'OKDFS') }}</h4>
         </a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center">
         <ul class="navbar-nav navbar-nav-left header-links d-none d-md-flex">
-          <!-- <li class="nav-item">
-            <a href="#" class="nav-link">Schedule
-              <span class="badge badge-primary ml-1">New</span>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a href="#" class="nav-link">
-              <i class="mdi mdi-elevation-rise"></i>Reports</a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="mdi mdi-bookmark-plus-outline"></i>Score</a>
-          </li> -->
         </ul>
         <ul class="navbar-nav navbar-nav-right">
+        @guest
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+            </li>
+            @if (Route::has('register'))
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                </li>
+            @endif
+          @else
           <li class="nav-item dropdown d-none d-xl-inline-block">
             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
               <span class="profile-text">{{ Auth::user()->first_name . ' ' . Auth::user()->middle_name }}</span>
-              <img class="img-xs rounded-circle" src="{{ asset('images/faces/face1.jpg') }}" alt="Profile image">
+              <img class="img-xs rounded-circle" src="{{ asset('images/user-placeholder.jpg') }}" alt="Profile image">
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
               <a class="dropdown-item p-0">
@@ -87,27 +78,29 @@
                 </form>
             </div>
           </li>
+          @endguest
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
           <span class="mdi mdi-menu"></span>
         </button>
       </div>
     </nav>
-    <!-- partial -->
-    <div class="container-fluid page-body-wrapper">
-      <!-- partial:partials/_sidebar.html -->
+    <div class="container-fluid top-padding page-body-wrapper">
+    @guest
+        @yield('content')
+    @else
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item nav-profile">
             <div class="nav-link">
               <div class="user-wrapper">
                 <div class="profile-image">
-                  <img src="{{ asset('images/faces/face1.jpg') }}" alt="profile image">
+                  <img src="{{ asset('images/user-placeholder.jpg') }}" alt="profile image">
                 </div>
                 <div class="text-wrapper">
                   <p class="profile-name">{{ Auth::user()->first_name . ' ' . Auth::user()->middle_name }}</p>
                   <div>
-                    <small class="designation text-muted">Manager</small>
+                    <small class="designation text-muted">{{ Auth::user()->role }}</small>
                     <span class="status-indicator online"></span>
                   </div>
                 </div>
@@ -115,11 +108,12 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/admin/dashboard">
+            <a class="nav-link" href="/app/home">
               <i class="menu-icon fa fa-dashboard"></i>
-              <span class="menu-title">Dashboard</span>
+              <span class="menu-title">Home</span>
             </a>
           </li>
+          @if (Auth::user()->role === 'admin')
           <li class="nav-item">
             <a class="nav-link" href="{{ route('hospitals') }}">
               <i class="menu-icon fa fa-ambulance"></i>
@@ -138,39 +132,51 @@
               <span class="menu-title">Resources</span>
             </a>
           </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="{{ route('chat', 2) }}">
+              <i class="menu-icon fa fa-book"></i>
+              <span class="menu-title">Chat</span>
+            </a>
+          </li> -->
+          @endif
+          @if(Auth::user()->role === 'doctor')
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('hospitalParients') }}">
+              <i class="menu-icon fa fa-group"></i>
+              <span class="menu-title">Patients</span>
+            </a>
+          </li>
+          @endif
+          @if(Auth::user()->role === 'user')
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('usersDoctor') }}">
+              <i class="menu-icon fa fa-user-md"></i>
+              <span class="menu-title">Doctors</span>
+            </a>
+          </li>
+          @endif
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('messages') }}">
+              <i class="menu-icon fa fa-wechat"></i>
+              <span class="menu-title">Messages</span>
+            </a>
+          </li>
         </ul>
       </nav>
-      <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
             @yield('content')
         </div>
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-
-        </footer>
-        <!-- partial -->
       </div>
-      <!-- main-panel ends -->
+      @endguest
     </div>
-    <!-- page-body-wrapper ends -->
   </div>
-  <!-- container-scroller -->
 
-  <!-- plugins:js -->
   <script src="{{ asset('vendors/js/vendor.bundle.base.js') }}"></script>
   <script src="{{ asset('vendors/js/vendor.bundle.addons.js') }}"></script>
-  <!-- endinject -->
-  <!-- Plugin js for this page-->
-  <!-- End plugin js for this page-->
-  <!-- inject:js -->
   <script src="{{ asset('js/off-canvas.js') }}"></script>
   <script src="{{ asset('js/misc.js') }}"></script>
-  <!-- endinject -->
-  <!-- Custom js for this page-->
   <script src="{{ asset('js/dashboard.js') }}"></script>
-  <!-- End custom js for this page-->
 </body>
 
 </html>

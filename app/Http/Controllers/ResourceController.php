@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use \App\resource;
+use \App\Resource;
 
 class ResourceController extends Controller
 {
@@ -15,7 +15,7 @@ class ResourceController extends Controller
      */
     public function index()
     {
-        $resources = resource::all();
+        $resources = Resource::all();
         return view('admin.resource.list')->with('resources',$resources);
     }
 

@@ -16301,4 +16301,16 @@ ul {
   .error-page .error-page-divider {
     border-left: 3px solid rgba(255, 255, 255, 0.2); } }
 
+    .navbar.default-layout .navbar-brand-wrapper {
+      background: transparent !important;
+    }
+    .navbar.default-layout .navbar-menu-wrapper, .navbar.default-layout .navbar-brand-wrapper{
+      height: 50px !important;
+    }
+    .top-padding {
+      padding-top: 50px !important;
+    }
+    body {
+      background: #f2f8f9 !important;
+    }
 /*# sourceMappingURL=maps/style.css.map */

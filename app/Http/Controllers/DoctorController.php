@@ -19,8 +19,20 @@ class DoctorController extends Controller
     public function index()
     {
         $doctors = Doctor::with(['user', 'hospital'])->get();
-        // dd($doctors);
         return view('admin.doctor.list')->with('doctors', $doctors);
+    }
+
+    public function getDoctorsByHospitalId($id) {
+        $doctors = Doctor::with('user')->where('hospital_id', $id)->get();
+        return response($doctors);
+    }
+
+    public function getDoctorsForPatients() {
+        $user = User::with('patient')->find(auth()->id());
+        // dd($user->patient->hospital_id);
+        $doctors = Doctor::with('user')->where('hospital_id', $user->patient->hospital_id)->get();
+        // dd($doctors);
+        return view('doctors')->with('doctors', $doctors);
     }
 
     /**
@@ -49,14 +61,16 @@ class DoctorController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'hospital_id' => ['required']
+            'hospital_id' => ['required'],
+            'role' => ['required']
         ]);
-
+            // dd($request);
         $user = User::create([
             'first_name' => $request['first_name'],
             'middle_name' => $request['middle_name'],
             'last_name' => $request['last_name'],
             'phone' => $request['phone'],
+            'role' => $request['role'],
             'email' => $request['email'],
             'password' => Hash::make($request['password'])
         ]);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \App\Resource;
 
 class HomeController extends Controller
 {
@@ -13,21 +14,17 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return view('home');
-    }
-
-    public function chat()
-    {
-        return view('chat');
+        $resources = Resource::all();
+        return view('home')->with('resources',$resources);
     }
 }

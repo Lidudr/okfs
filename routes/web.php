@@ -11,24 +11,20 @@
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+// Route::get('/', function () {
+//     return view('home');
+// });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('/chat', 'ChatController@index')->name('chat');
-
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::group([
     'middleware' => 'auth',
-    'prefix' => 'admin'
+    'prefix' => 'app'
 ], function ($router) {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    });
+    Route::get('/home', 'HomeController@index')->name('resources');
 
 // Resource
 Route::get('/resources', 'ResourceController@index')->name('resources');
@@ -53,4 +49,15 @@ Route::get('/doctor/edit/{id}', 'DoctorController@edit')->name('editDoctor');
 Route::post('/doctor/add', 'DoctorController@store')->name('storeDoctor');
 Route::post('/doctor/update/{id}', 'DoctorController@update')->name('updateDoctor');
 Route::get('/doctor/delete/{id}', 'DoctorController@destroy')->name('deleteDoctor');
+Route::get('/doctors/user', 'DoctorController@getDoctorsForPatients')->name('usersDoctor');
+
+
+Route::get('/hospital/parients', 'PatientController@hspitalPatients')->name('hospitalParients');
+
+// Chat
+Route::get('/chat/{id}', 'ChatController@start')->name('chat');
+Route::get('/contacts', 'ChatController@contacts');
+Route::get('/messages', 'ChatController@messages')->name('messages');
+Route::get('/conversation/{id}', 'ChatController@getConversation');
+Route::post('/conversation/send', 'ChatController@send');
 });

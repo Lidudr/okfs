@@ -7,7 +7,7 @@
         <div class="card">
                 <div class="card-body">
                     <span class="card-title">Hospitals</span>
-                    <a href="/admin/hospital/add" class="float-right">New Hospital</a>
+                    <a href="/app/hospital/add" class="float-right">New Hospital</a>
                 <table class="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -24,8 +24,8 @@
                     <td>{{$hospital->address}}</td>
                     <td>{{$hospital->type}}</td>
                     <td>
-                        <a href="/admin/hospital/edit/{{$hospital->id}}"><i class="fa fa-edit"></i></a>
-                        <a class="text-danger" href="/admin/hospital/delete/{{$hospital->id}}"><i class="fa fa-trash"></i></a>
+                        <a href="/app/hospital/edit/{{$hospital->id}}"><i class="fa fa-edit"></i></a>
+                        <a class="text-danger" href="/app/hospital/delete/{{$hospital->id}}"><i class="fa fa-trash"></i></a>
                     </td>
                     </tr>
                     @endforeach
